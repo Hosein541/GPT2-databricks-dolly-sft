@@ -1,8 +1,3 @@
-فایل `README.md` جامع و حرفه‌ای برای این پروژه با ساختار زیر آماده شده است. با توجه به بررسی دقیق نوت‌بوک، مدل انتخابی شما **GPT-2 Medium (نسخه ۳۵۵ میلیون پارامتری)** بوده و آموزش در ۲ اپوک طی ۳۶ دقیقه انجام گرفته است. تمامی فایل‌های جانبی شامل `utils.py`، `gpt_download.py`، تصویر تابع زیان و فایل نتایج تست (`instruction-data-with-response.json`) در ساختار و توضیحات گنجانده شده‌اند:
-
----
-
-```markdown
 # 🧠 Instruction Fine-Tuning GPT-2 Medium (355M) on Databricks Dolly-15k
 
 Supervised Fine-Tuning (SFT) of a pretrained **GPT-2 Medium (355M)** model on a balanced instruction-following dataset from **Databricks Dolly-15k** using pure **PyTorch** (inspired by Chapter 7 of Sebastian Raschka's *Build a Large Language Model from Scratch*).
@@ -11,7 +6,6 @@ Supervised Fine-Tuning (SFT) of a pretrained **GPT-2 Medium (355M)** model on a 
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.x-EE4C2C.svg)](https://pytorch.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-```
 
 ---
 
