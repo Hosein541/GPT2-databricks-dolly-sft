@@ -110,58 +110,13 @@ For extractive and short Q&A tasks, the 355M model captures the correct informat
 ### 1. Installation
 
 ```bash
-git clone [https://github.com/](https://github.com/)/.git
-cd 
+git clone https://github.com/Hosein541/GPT2-databricks-dolly-sft.git
+cd GPT2-databricks-dolly-sft
+
 pip install -r requirements.txt
 
 ```
 
-### 2. Generate Completions
-
-```python
-import torch
-import tiktoken
-from utils import GPTModel, generate, text_to_token_ids, token_ids_to_text
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-tokenizer = tiktoken.get_encoding("gpt2")
-
-# Model configuration for GPT-2 Medium
-BASE_CONFIG = {
-    "vocab_size": 50257,
-    "context_length": 1024,
-    "drop_rate": 0.0,
-    "qkv_bias": True,
-    "emb_dim": 1024,
-    "n_layers": 24,
-    "n_heads": 16,
-}
-
-# Initialize model and load trained checkpoint
-model = GPTModel(BASE_CONFIG)
-model.load_state_dict(torch.load("model_and_optimizer.pth", map_location=device)["model_state_dict"])
-model.to(device)
-model.eval()
-
-# Prompt formatting
-instruction = "Identify which vehicle is electric: Tesla Model 3 or Ford Mustang GT."
-prompt = (
-    "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n"
-    f"### Instruction:\n{instruction}\n\n### Response:\n"
-)
-
-token_ids = generate(
-    model=model,
-    idx=text_to_token_ids(prompt, tokenizer).to(device),
-    max_new_tokens=64,
-    context_size=BASE_CONFIG["context_length"],
-    eos_id=50256
-)
-
-response = token_ids_to_text(token_ids, tokenizer)[len(prompt):].strip()
-print("Model Response:\n", response)
-
-```
 
 ---
 
