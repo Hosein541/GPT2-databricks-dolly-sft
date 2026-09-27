@@ -319,7 +319,7 @@ def train_model_simple(
                       torch.cuda.empty_cache()
                       print(">>> [Saved New Best Model]")
 
-        # تولید نمونه متن در انتهای هر اپوک
+        # generate sample text at the end of the each epoch
         generate_and_print_sample(
             model, tokenizer, device, start_context
         )
