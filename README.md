@@ -77,8 +77,10 @@ Below is an instruction that describes a task. Write a response that appropriate
 
 ## 📈 Training Dynamics & Loss Curve
 
-The training cross-entropy loss dropped steadily from **~3.18** down to below **0.80**, while the validation loss converged and stabilized around **1.77**:
 ![Loss Curve](assests/loss_curve.png)
+
+
+The training cross-entropy loss dropped steadily from **~3.18** down to below **0.80**, while the validation loss converged and stabilized around **1.77**:
 
 * **Initial Loss**: Train Loss `3.176` | Val Loss `2.749`
 * **Mid Training (Step 565)**: Train Loss `1.684` | Val Loss `1.775` (Saved Best Checkpoint)
