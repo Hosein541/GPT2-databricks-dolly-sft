@@ -267,38 +267,36 @@ def generate(model, idx, max_new_tokens, context_size, temperature=0.0, top_k=No
 def train_model_simple(
     model, train_loader, val_loader, optimizer, device, num_epochs,
     eval_freq, eval_iter, start_context, tokenizer,
-    accumulation_steps=8, save_path="best_model.pt"  # تعداد مینی‌بچ‌ها برای هر آپدیت وزن
+    accumulation_steps=8, save_path="best_model.pt"  
 ):
-    # لیست‌های ذخیره وضعیت
     train_losses, val_losses, track_tokens_seen = [], [], []
     tokens_seen, global_step = 0, -1
     best_val_loss = float("inf")
 
     for epoch in range(num_epochs):
         model.train()
-        optimizer.zero_grad()  # صفر کردن اولیه گرادیان در آغاز هر اپوک
+        optimizer.zero_grad()
 
         for batch_idx, (input_batch, target_batch) in enumerate(train_loader):
-            # ۱. محاسبه لاس و نرمال‌سازی آن بر اساس تعداد گام‌های تجمیع
+            # calculate and nomrmalizing of the loss based on accumulation steps
             loss = calc_loss_batch(input_batch, target_batch, model, device)
             loss = loss / accumulation_steps
             
-            # ۲. انباشت گرادیان‌ها در تانسورهای .grad
             loss.backward()
 
             tokens_seen += input_batch.numel()
 
-            # بررسی شرط تکمیل یک چرخه تجمیع یا رسیدن به آخرین بچ اپوک
+
             is_accumulation_done = ((batch_idx + 1) % accumulation_steps == 0)
             is_last_batch = (batch_idx + 1 == len(train_loader))
 
             if is_accumulation_done or is_last_batch:
-                # ۳. آپدیت وزن‌ها با گرادیان‌های انباشته‌شده
+                # update weights
                 optimizer.step()
-                optimizer.zero_grad()  # پاک‌سازی گرادیان‌ها برای چرخه بعدی
+                optimizer.zero_grad()  # gradient cleaning for next cycle
                 global_step += 1
 
-                # ارزیابی دوره‌ای مدل
+                # model evaluation
                 if global_step % eval_freq == 0:
                     train_loss, val_loss = evaluate_model(
                         model, train_loader, val_loader, device, eval_iter
@@ -313,15 +311,11 @@ def train_model_simple(
 
                     if val_loss < best_val_loss:
                       best_val_loss = val_loss
-                      # torch.save(model.state_dict(), save_path)
                       checkpoint_data = {
-                                      # "epoch": epoch,
-                                      # "global_step": global_step,
                                       "model_state_dict": model.state_dict(),
                                       "optimizer_state_dict": optimizer.state_dict(),
                                   }
                       torch.save(checkpoint_data, save_path)
-                    #   del checkpoint_data  # حذف از متغیر محلی
                       torch.cuda.empty_cache()
                       print(">>> [Saved New Best Model]")
 
